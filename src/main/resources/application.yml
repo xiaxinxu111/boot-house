@@ -1,0 +1,14 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /boot
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/et1910?serverTimezone=UTC
+    username: root
+    password: etoak
+    hikari:
+      maximum-pool-size: 50
+  

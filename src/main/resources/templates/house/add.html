@@ -18,11 +18,12 @@
         <form th:action="@{/house/add}"
               method="post"
               enctype="multipart/form-data"
+              id="addForm"
               class="form-horizontal" role="form">
             <!-- 1.省 -->
             <div class="form-group">
                 <label for="province" class="col-sm-2 control-label">所在省</label>
-                <div class="col-sm-3">
+                <div class="col-sm-3 input-group">
                     <select id="province" name="province" class="form-control">
                         <option value="">--请选择--</option>
                     </select>
@@ -31,7 +32,7 @@
             <!-- 2.市 -->
             <div class="form-group">
                 <label for="city" class="col-sm-2 control-label">所在市</label>
-                <div class="col-sm-3">
+                <div class="col-sm-3 input-group">
                     <select id="city" name="city" class="form-control">
                         <option value="">--请选择--</option>
                     </select>
@@ -40,7 +41,7 @@
             <!-- 3.区县 -->
             <div class="form-group">
                 <label for="area" class="col-sm-2 control-label">所在区县</label>
-                <div class="col-sm-3">
+                <div class="col-sm-3 input-group">
                     <select id="area" name="area" class="form-control">
                         <option value="">--请选择--</option>
                     </select>
@@ -49,7 +50,7 @@
             <!-- 4.租赁方式 -->
             <div class="form-group">
                 <label for="rent_mode" class="col-sm-2 control-label">租赁方式</label>
-                <div class="col-sm-3">
+                <div class="col-sm-3 input-group">
                     <select id="rent_mode" name="rentMode" class="form-control">
                         <option value="">--请选择--</option>
                     </select>
@@ -58,7 +59,7 @@
             <!-- 5.朝向 -->
             <div class="form-group">
                 <label for="orientation" class="col-sm-2 control-label">朝向</label>
-                <div class="col-sm-3">
+                <div class="col-sm-3 input-group">
                     <select id="orientation" name="orientation" class="form-control">
                         <option value="">--请选择--</option>
                     </select>
@@ -67,7 +68,7 @@
             <!-- 6.户型 -->
             <div class="form-group">
                 <label for="house_type" class="col-sm-2 control-label">户型</label>
-                <div class="col-sm-3">
+                <div class="col-sm-3 input-group">
                     <select id="house_type" name="houseType" class="form-control">
                         <option value="">--请选择--</option>
                     </select>
@@ -76,21 +77,21 @@
             <!-- 7. 租金 -->
             <div class="form-group">
                 <label for="rental" class="col-sm-2 control-label">租金</label>
-                <div class="col-sm-3">
-                    <input type="number" name="rental" id="rental" class="form-control">
+                <div class="col-sm-3 input-group">
+                    <input type="number" name="rental" id="rental" class="form-control" >
                 </div>
             </div>
             <!-- 8. 地址 -->
             <div class="form-group">
                 <label for="address" class="col-sm-2 control-label">地址</label>
-                <div class="col-sm-3">
+                <div class="col-sm-3 input-group">
                     <input type="text" name="address" id="address" class="form-control" placeholder="详细地址">
                 </div>
             </div>
             <!-- 9. 图片 -->
             <div class="form-group">
                 <label for="address" class="col-sm-2 control-label">房屋照片</label>
-                <div class="col-sm-3">
+                <div class="col-sm-3 input-group">
                     <input type="file" name="file" id="file" class="form-control">
                 </div>
             </div>
@@ -102,12 +103,18 @@
             </div>
         </form>
         <script th:src="@{/lib/js/jquery/jquery.min.js}"></script>
+        <script th:src="@{/lib/js/jquery/validate/jquery.validate.min.js}"></script>
+        <script th:src="@{/lib/js/jquery/validate/messages_zh.min.js}"></script>
         <script th:src="@{/lib/bootstrap/js/bootstrap.min.js}"></script>
         <script th:inline="javascript">
             const path = [[${#request.getContextPath()}]]
             const emptyOption = "<option value=''>--请选择--</option>"
             $(function(){
+
                 House.queryArea("province")
+                House.queryDict("rent_mode")
+                House.queryDict("orientation")
+                House.queryDict("house_type")
                 $("#province").change(function(){
                     $("#city").html(emptyOption)
                     $("#area").html(emptyOption)
@@ -122,9 +129,8 @@
                         House.queryArea("area",this.value)
                     }
                 })
-                House.queryDict("rent_mode")
-                House.queryDict("orientation")
-                House.queryDict("house_type")
+                //校验方法
+                House.validateForm()
             })
 
             //定义House接口 包含查询地区和查询字典项数据等接口
@@ -163,6 +169,41 @@
                             })
                             $("#"+groupId).html(options)
                         }
+                    })
+                },
+                validateForm:function(){
+                    $("#addForm").validate({
+                        debug:true,
+                        submitHandler:function(form){
+                            alert("校验成功")
+                        }
+                        //修改提示信息的元素属性  默认是<label> 使用layui时一定要改成div
+                        errorElement: "div",
+                        //修改错误显示位置
+                        errorPlacement:function(errorEle,validateEle){
+                            errorEle.addClass("input-group_addon")
+                            errorEle.appendTo(validateEle.parent())
+                        },
+                        //校验成功后执行
+                        success:function(msgElement){
+                          msgElement.addClass("input-group-addon").text("填写符合要求")
+                        },
+                        //校验规则 : rules
+                        rules:{
+                            province: "required",  //name属性为province的表单项 设置为必填项
+                            address: {
+                              required:true,  //不能为空
+                              maxlength:10  //最多10个字符
+                            },
+                        },
+                        //校验失败后的消息: messages
+                        messages:{
+                            province: "省份为必填项",
+                            address:{
+                                required:"地址为必填项",
+                                maxlength:"地址为10个字符以内",
+                            }
+                        },
                     })
                 }
             }

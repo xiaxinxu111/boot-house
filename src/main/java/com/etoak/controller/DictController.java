@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(":/dict")
+@RequestMapping("/dict")
 @Slf4j
 @Api(tags = "字典项查询服务")
 public class DictController {

@@ -115,14 +115,15 @@
                 House.queryDict("rent_mode")
                 House.queryDict("orientation")
                 House.queryDict("house_type")
+
                 $("#province").change(function(){
                     $("#city").html(emptyOption)
                     $("#area").html(emptyOption)
                     if(this.value){
                         House.queryArea("city",this.value)
                     }
-
                 })
+
                 $("#city").change(function(){
                     $("#area").html(emptyOption)
                     if(this.value){

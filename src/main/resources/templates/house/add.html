@@ -173,15 +173,16 @@
                 },
                 validateForm:function(){
                     $("#addForm").validate({
-                        debug:true,
-                        submitHandler:function(form){
-                            alert("校验成功")
-                        }
+                        debug:false,
+                        //submitHandler:function(form){
+                        //   alert("校验成功")
+                        //},
+
                         //修改提示信息的元素属性  默认是<label> 使用layui时一定要改成div
                         errorElement: "div",
                         //修改错误显示位置
                         errorPlacement:function(errorEle,validateEle){
-                            errorEle.addClass("input-group_addon")
+                            errorEle.addClass("input-group-addon")
                             errorEle.appendTo(validateEle.parent())
                         },
                         //校验成功后执行
@@ -191,6 +192,16 @@
                         //校验规则 : rules
                         rules:{
                             province: "required",  //name属性为province的表单项 设置为必填项
+                            city:"required",
+                            area:"required",
+                            rentMode:"required",
+                            orientation:"required",
+                            houseType:"required",
+                            rental:{
+                               required:true,
+                               positiveInt:true,
+                               max:100000
+                            },
                             address: {
                               required:true,  //不能为空
                               maxlength:10  //最多10个字符
@@ -199,12 +210,28 @@
                         //校验失败后的消息: messages
                         messages:{
                             province: "省份为必填项",
+                            city:"市为必填项",
+                            area:"区县为必填项",
+                            rentMode:"租赁方式为必填项",
+                            orientation:"房屋朝向为必填项",
+                            houseType:"户型为必填项",
+                            rental:{
+                                required:"价格为必填项",
+                                positiveInt:"必须是大于零的整数",
+                                max:"最大值为10万元"
+                            },
                             address:{
                                 required:"地址为必填项",
                                 maxlength:"地址为10个字符以内",
                             }
+
                         },
                     })
+                    //自定义校验规则
+                    $.validator.addMethod("positiveInt",function(value,element){
+                        let reg = /^\+?[1-9]\d*$/
+                        return this.optional(element) || (reg.test(value))
+                    },"必须是大于零的正整数")
                 }
             }
 

@@ -110,11 +110,12 @@
             const path = [[${#request.getContextPath()}]]
             const emptyOption = "<option value=''>--请选择--</option>"
             $(function(){
-
+                
                 House.queryArea("province")
                 House.queryDict("rent_mode")
                 House.queryDict("orientation")
                 House.queryDict("house_type")
+
 
                 $("#province").change(function(){
                     $("#city").html(emptyOption)

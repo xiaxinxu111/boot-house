@@ -11,4 +11,5 @@ public interface HouseMapper {
 
     List<HouseVo> queryList(HouseVo houseVo);
 
+    int updateHouse(House house);
 }

@@ -44,11 +44,13 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public Page<HouseVo> queryList(int pageNum,int pageSize,HouseVo houseVo,String[] rentalList) {
         this.handelRental(houseVo,rentalList);
+        System.out.println(houseVo.getRentalMapList());
         PageHelper.startPage(pageNum, pageSize);
         List<HouseVo> rows =  houseMapper.queryList(houseVo);
         PageInfo<HouseVo> pageInfo = new PageInfo<>(rows);
         return new Page<HouseVo>(pageInfo.getPageNum(),pageInfo.getPageSize(),rows,pageInfo.getTotal(),pageInfo.getPages());
     }
+
 
     private void handelRental(HouseVo houseVo,String[] rentalList){
         if(ArrayUtils.isNotEmpty(rentalList)){
@@ -62,7 +64,14 @@ public class HouseServiceImpl implements HouseService {
             }
             houseVo.setRentalMapList(rentalMapList);
         }
-
     }
 
+    @Override
+    public int updateHouse(House house) {
+        if(house.getCity() != null){
+            Area area = areaMapper.queryById(house.getArea());
+            house.setAreaName(area.getName());
+        }
+        return houseMapper.updateHouse(house);
+    }
 }

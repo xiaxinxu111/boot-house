@@ -11,4 +11,6 @@ public interface HouseService {
     int addHouse(House house);
 
     Page<HouseVo> queryList(int pageNum,int pageSize,HouseVo houseVo,String[] rentalList);
+
+    int updateHouse(House house);
 }

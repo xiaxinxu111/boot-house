@@ -74,4 +74,11 @@ public class HouseServiceImpl implements HouseService {
         }
         return houseMapper.updateHouse(house);
     }
+
+    @Override
+    public int deleteById(int id) {
+
+        return houseMapper.deleteById(id);
+
+    }
 }

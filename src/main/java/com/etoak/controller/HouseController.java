@@ -110,4 +110,11 @@ public class HouseController {
         houseService.updateHouse(house);
         return "redirect:/house/toList";
     }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id")int id){
+        log.info("delete id : {}",id);
+        houseService.deleteById(id);
+        return "redirect:/house/toList";
+    }
 }

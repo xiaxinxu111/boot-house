@@ -119,4 +119,9 @@
          </set>
          where id = #{id}
     </update>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_boot_house
+        where id = #{value}
+    </delete>
 </mapper>

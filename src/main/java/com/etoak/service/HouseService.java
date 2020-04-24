@@ -13,4 +13,6 @@ public interface HouseService {
     Page<HouseVo> queryList(int pageNum,int pageSize,HouseVo houseVo,String[] rentalList);
 
     int updateHouse(House house);
+
+    int deleteById(int id);
 }

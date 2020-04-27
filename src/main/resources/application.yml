@@ -14,6 +14,8 @@ spring:
   thymeleaf:
     cache: false
     encoding: UTF-8
+    suffix: .html
+    prefix: classpath:/templates/
   servlet:
     multipart:
       max-file-size: 2MB
